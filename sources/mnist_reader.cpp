@@ -55,6 +55,9 @@ void mnist_reader::ReadMNIST(vector<Eigen::VectorXf> &mnist, Eigen::VectorXi &la
             }
         }
     }
+    else
+        throw std::runtime_error("mnist_reader::ReadMnist - Unable to open file : " + mFullPathImage);
+
     ifstream file2 (mFullPathLabel,ios::binary);
     if (file.is_open())
     {
@@ -72,5 +75,7 @@ void mnist_reader::ReadMNIST(vector<Eigen::VectorXf> &mnist, Eigen::VectorXi &la
             label[i] = (int)temp;
         }
     }
+    else
+        throw std::runtime_error("mnist_reader::ReadMnist - Unable to open file : " + mFullPathLabel);
 }
 

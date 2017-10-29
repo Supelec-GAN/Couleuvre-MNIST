@@ -8,7 +8,6 @@
 
 using namespace std;
 
-
 class mnist_reader
 {
 public:
