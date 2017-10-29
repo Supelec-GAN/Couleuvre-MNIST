@@ -19,3 +19,10 @@ SOURCES += \
     sources/neuronlayer.cpp \
     sources/teacher.cpp \
     headers/neuralnetwork.inl
+
+DISTFILES += \
+    MNIST/t10k-images.idx3-ubyte \
+    MNIST/t10k-labels.idx1-ubyte \
+    MNIST/train-images.idx3-ubyte \
+    MNIST/train-labels.idx1-ubyte \
+    Makefile

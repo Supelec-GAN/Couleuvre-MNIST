@@ -16,7 +16,7 @@ int main()
 {
    srand(192786327);
 
-   mnist_reader mnist("/home/manu/Documents/MNIST/t10k-images.idx3-ubyte","/home/manu/Documents/MNIST/t10k-labels.idx1-ubyte");
+   mnist_reader mnist("/home/manu/Documents/MNIST/train-images.idx3-ubyte","/home/manu/Documents/MNIST/train-labels.idx1-ubyte"); //Il faut mettre les chemins absolus pour ouvrir les fichiers
    vector<Eigen::VectorXf> image;
    Eigen::VectorXi label;
    mnist.ReadMNIST(image, label);
@@ -24,7 +24,7 @@ int main()
    {
        if (i%28 == 0)
            cout << endl;
-       if (image[2][i] > 80)
+       if (image[1][i] > 0.01)
            cout << 1;
        else cout << 0;
    }*/
@@ -35,13 +35,12 @@ int main()
    {
    csvfile csv("resultat.csv"); 
     
-   NeuronLayer inputLayer(784,3000, Functions::sigmoid(4.f));
-   NeuronLayer innerLayer1(3000,1500, Functions::sigmoid(4.f));
-   NeuronLayer innerLayer6(1500,1000, Functions::sigmoid(4.f));
-   NeuronLayer innerLayer7(1000,500, Functions::sigmoid(4.f));
-   NeuronLayer outputLayer(500,10, Functions::sigmoid(4.f));
+   NeuronLayer inputLayer(784,2000, Functions::sigmoid(1.f));
+   NeuronLayer innerLayer1(2000,1000, Functions::sigmoid(1.0f));
+   NeuronLayer innerLayer2(1000,500, Functions::sigmoid(1.0f));
+   NeuronLayer outputLayer(500,10, Functions::sigmoid(0.1f));
 
-   NeuralNetwork::Ptr network(new NeuralNetwork(std::vector<NeuronLayer>({{inputLayer, innerLayer1, innerLayer6, innerLayer7, outputLayer}})));
+   NeuralNetwork::Ptr network(new NeuralNetwork(std::vector<NeuronLayer>({{inputLayer, innerLayer1, innerLayer2, outputLayer}})));
 
    Teacher teacher(network);
 
@@ -54,15 +53,26 @@ int main()
    csv << "nbApprentissage" << "erreur" << "nbReussite" << endrow;
    for(size_t i(0); i < 10000; i++)
    {
+
        auto input = image[i];
        Eigen::VectorXf target= Eigen::MatrixXf::Zero(10, 1);
+       if (label[i]== 4){
        target[label[i]] = 1;
+
+       if (i%2 == 0)
+       {
        std::cout << "Input no : " << i << "\n";
        //std::cout << "Entrée : " << input.transpose() << "\n";
        std::cout << "Sortie attendue : " << label[i] << "\n";
        //std::cout << "Poids : \n" << *network << "\n";
+
        std::cout << "Sortie : " << endl << network->process(input) << std::endl;
-       teacher.backProp(input, target, 0.1);
+
+       std::cout << "Erreur : " << endl << Functions::l2Norm()(network->process(input),target) << std::endl;
+
+       } }
+
+       teacher.backProp(input, target, 0.2);
    
    }
    }

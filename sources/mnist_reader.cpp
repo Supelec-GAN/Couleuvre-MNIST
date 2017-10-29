@@ -9,8 +9,6 @@ mnist_reader::mnist_reader(string pathImage, string pathLabel)
 }
 
 
-
-
 int mnist_reader::reverseInt (int i)
 {
     unsigned char ch1, ch2, ch3, ch4;
@@ -52,7 +50,7 @@ void mnist_reader::ReadMNIST(vector<Eigen::VectorXf> &mnist, Eigen::VectorXi &la
                 {
                     unsigned char temp=0;
                     file.read((char*)&temp,sizeof(temp));
-                    mnist[i][(n_rows*r)+c] = (float)temp/255;
+                    mnist[i][(n_rows*r)+c] = ((float)temp)/255;
                 }
             }
         }
