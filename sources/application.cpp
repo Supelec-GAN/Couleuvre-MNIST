@@ -1,5 +1,4 @@
 #include "headers/application.hpp"
-#include "headers/dataset.hpp"
 #include <math.h>
 
 Application::Application(NeuralNetwork::Ptr network, Batch teachingBatch, Batch testingBatch)
@@ -7,7 +6,6 @@ Application::Application(NeuralNetwork::Ptr network, Batch teachingBatch, Batch 
 , mTeacher(mNetwork)
 , mTeachingBatch(teachingBatch)
 , mTestingBatch(testingBatch)
-, mDataCollector()
 , mStatsCollector()
 , mTestCounter(0)
 {}
@@ -18,7 +16,6 @@ Application::Application(   NeuralNetwork::Ptr network,
                             std::vector<Eigen::VectorXf> testingInputs)
 : mNetwork(network)
 , mTeacher(mNetwork)
-, mDataCollector()
 , mStatsCollector()
 , mTestCounter(0)
 {

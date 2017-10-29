@@ -6,7 +6,6 @@
 #include <random>
 
 #include "headers/neuralnetwork.hpp"
-#include "headers/datacollector.hpp"
 #include "headers/teacher.hpp"
 #include "headers/statscollector.hpp"
 
@@ -86,9 +85,6 @@ class Application
         Batch               mTeachingBatch;
         /// Le batch contenant tous les samples de test du projet
         Batch               mTestingBatch;
-
-        /// Le dataCollector permettant de stocker les données d'erreur et de les exporter en csv
-        DataCollector       mDataCollector;
 
         Stats::StatsCollector mStatsCollector;
         /// Un compteur permettant d'indicer les données exportées

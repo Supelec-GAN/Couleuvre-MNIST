@@ -24,7 +24,8 @@ SOURCES += \
     sources/teacher.cpp \
     headers/neuralnetwork.inl \
     sources/errorcollector.cpp \
-    sources/statscollector.cpp
+    sources/statscollector.cpp \
+    sources/application.cpp
 
 DISTFILES += \
     MNIST/t10k-images.idx3-ubyte \
