@@ -7,7 +7,7 @@
 #include "headers/functions.hpp"
 #include "headers/teacher.hpp"
 #include "headers/mnist_reader.h"
-#include "CSVFile.h"
+#include "headers/CSVFile.h"
 
 
 using namespace std;
