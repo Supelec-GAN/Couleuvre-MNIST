@@ -6,6 +6,8 @@
 #include <functional>
 #include <memory>
 
+#include "headers/functions.hpp"
+
 
 /// Classe modélisant une couche de neurones
 /**
@@ -22,7 +24,7 @@ class NeuronLayer
          *
          * La matrice de poids est de dimension outputSize x inputSize
          */
-                        NeuronLayer(unsigned int inputSize, unsigned int outputSize, std::function<float(float)> activationF = [] (float x) {return x;});
+                        NeuronLayer(unsigned int inputSize, unsigned int outputSize, std::function<float(float)> activationF = Functions::sigmoid(10.f));
 
         /// La fonction effectuant le calcul de la sortie en fonction de l'entrée
         /**
@@ -43,7 +45,7 @@ class NeuronLayer
          */
         Eigen::VectorXf backProp(Eigen::VectorXf xnPartialDerivative, float step);
 
-
+        void            reset();
 
     public:
         /// Fonction utilitaire permettant d'afficher le neurone

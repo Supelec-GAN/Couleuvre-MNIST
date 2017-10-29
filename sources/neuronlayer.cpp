@@ -61,6 +61,12 @@ Eigen::MatrixXf NeuronLayer::fnDerivativeMatrix() const
     return Eigen::MatrixXf(fnDerivativeMat.asDiagonal());
 }
 
+void NeuronLayer::reset()
+{
+    mPoids = Eigen::MatrixXf::Random(mPoids.rows(), mPoids.cols());
+    mBiais = Eigen::VectorXf::Random(mBiais.size());
+}
+
 //*************AUXILIAIRES**************
 //**************************************
 

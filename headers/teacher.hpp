@@ -11,7 +11,7 @@ class Teacher
         /// Constructeur par unique pointer
         /**
          *  Construit un teacher supervisant l'apprentissage d'un réseau de neurone
-         *  @param un smart pointeur sur le réseau dont on veut superviser l'apprentissage
+         *  @param network un smart pointeur sur le réseau dont on veut superviser l'apprentissage
          */
                         Teacher(NeuralNetwork::Ptr network);
 

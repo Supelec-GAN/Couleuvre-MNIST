@@ -3,7 +3,9 @@
 
 #include <list>
 #include <vector>
+
 #include "neuronlayer.hpp"
+#include "headers/functions.hpp"
 
 class NeuralNetwork : public std::list<NeuronLayer>
 {
@@ -12,31 +14,33 @@ class NeuralNetwork : public std::list<NeuronLayer>
 
     public:
 	
-	/// Constructeur permettant d'initialiser une réseau neuronal vide
+        /// Constructeur permettant d'initialiser une réseau neuronal vide
         NeuralNetwork();
 	
-    /// Constructeur permettant d'initialiser un réseau neuronal complet
-    /**
-     * \param nbLayer le nombre de couches du réseau
-	 * \param nbInputs ne nombre d'entrées du réseau
-     * \param arrayNbNeuronsPerLayer la liste du nombre de neurone par couche (nbLayer éléments)
-     * \param arrayActivationFunctionPerLayer la liste des fonctions d'activation de chaque couche (nbLayer éléments)
-	 */
-        NeuralNetwork(unsigned int nbLayer, unsigned int nbInputs, std::vector<unsigned int> arrayNbNeuronsPerLayer, std::vector<std::function<float(float)>> arrayActivationFunctionPerLayer);
+        /// Constructeur permettant d'initialiser un réseau neuronal avec choix des fonctions d'activation
+        /**
+         * Constructeur permettant l'initialisation d'un réseau à n couches à partir des (n+1) tailles d'input/output
+         * (la sortie d'une couche est l'entrée de la suivante), avec choix des fonctions d'activation
+         * @param layerSizes les tailles des vecteurs d'entrées/sorties
+         * @param activationFuns le vector contenant les fonctions d'activation de chaque couche
+         */
+        NeuralNetwork(std::vector<unsigned int> layerSizes, std::vector<Functions::ActivationFun> activationFuns);
 	
-	/// Constructeur permettant d'initialiser un réseau neuronal avec la fonction par défaut
-	/**
-	 * \param nbLayer le nombre de couches du réseau
-	 * \param nbInputs ne nombre d'entrées du réseau
-	 * \param arrayNbNeuronsPerLayer la liste du nombre de neurone par couche (nbLayer éléments)
-	 */
-        NeuralNetwork(unsigned int nbLayer, unsigned int nbInputs, std::vector<unsigned int> arrayNbNeuronsPerLayer);
+        /// Constructeur permettant d'initialiser un réseau neuronal avec la fonction par défaut
+        /**
+         * Constructeur permettant l'initialisation d'un réseau à n couches à partir des (n+1) tailles d'input/output
+         * (la sortie d'une couche est l'entrée de la suivante). La fonction d'activation choisie est la fonction d'activation par défaut
+         * @param layerSizes les tailles des vecteurs d'entrées/sorties
+         */
+        NeuralNetwork(std::vector<unsigned int> layerSizes);
 
-    /// Constructeur permettant d'initialiser le réseau neuronal avec un conteneur de neuronLayer
-    /**
-     *  \param Container un conteneur (vector, list...) de NeuronLayer
-     *  \param layerList la liste des couches de neurones
-     */
+        /// Constructeur permettant d'initialiser le réseau neuronal avec un conteneur (vector, list...) de neuronLayer
+        /**
+         *  \param layerList la liste des couches de neurones
+         */
+
+        void reset();
+
         template <typename Container>
         NeuralNetwork(Container layerList);
 
@@ -44,11 +48,11 @@ class NeuralNetwork : public std::list<NeuronLayer>
 
 
     public:
-    /// Fonction utilitaire permettant d'afficher le réseau de neurones
-    /**
-     * Cette fonction affiche les matrices de poids des différents layers du réseau
-     */
-    friend std::ostream& operator<<(std::ostream& flux, NeuralNetwork network);
+        /// Fonction utilitaire permettant d'afficher le réseau de neurones
+        /**
+         * Cette fonction affiche les matrices de poids des différents layers du réseau
+         */
+        friend std::ostream& operator<<(std::ostream& flux, NeuralNetwork network);
 
 };
 
