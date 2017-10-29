@@ -28,8 +28,8 @@ SOURCES += \
     sources/application.cpp
 
 DISTFILES += \
-    MNIST/t10k-images.idx3-ubyte \
-    MNIST/t10k-labels.idx1-ubyte \
-    MNIST/train-images.idx3-ubyte \
-    MNIST/train-labels.idx1-ubyte \
-    Makefile
+    Makefile \
+    MNIST/test-images-10k \
+    MNIST/test-labels-10k \
+    MNIST/train-images-60k \
+    MNIST/train-labels-60k

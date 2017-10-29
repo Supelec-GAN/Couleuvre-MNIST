@@ -19,7 +19,7 @@ int main()
         std::vector<Functions::ActivationFun> funs{ {Functions::sigmoid(3.f), Functions::sigmoid(3.f), Functions::sigmoid(3.f)} };
         std::shared_ptr<NeuralNetwork> network(new NeuralNetwork(sizes, funs));
 
-        mnist_reader reader("MNIST/t10k-images.idx3-ubyte", "t10k-labels.idx1-ubyte");
+        mnist_reader reader("MNIST/test-images-10k", "MNIST/test-labels-10k");
 
         std::vector<Eigen::VectorXf> v;
         Eigen::VectorXi i;
