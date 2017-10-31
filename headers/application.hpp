@@ -4,6 +4,7 @@
 #include <eigen3/Eigen/Dense>
 #include <vector>
 #include <random>
+#include <memory>
 
 #include "headers/neuralnetwork.hpp"
 #include "headers/teacher.hpp"

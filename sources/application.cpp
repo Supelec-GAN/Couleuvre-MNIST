@@ -60,11 +60,11 @@ void Application::runTeach(unsigned int nbTeachings)
         mTeacher.backProp(itr->first, itr->second);
 }
 
-float Application::runTest()
+float Application::runTest(int limit)
 {
     float errorMean{0};
 
-    for(auto itr = mTestingBatch.begin(); itr != mTestingBatch.end(); ++itr)
+    for(auto itr = mTestingBatch.begin(); itr != mTestingBatch.end() && limit-- != 0; ++itr)
     {
         auto output{mNetwork->process(itr->first)};
         errorMean += sqrt((output - itr->second).squaredNorm());
