@@ -4,7 +4,6 @@
 #include <eigen3/Eigen/Dense>
 #include <vector>
 #include <random>
-#include <memory>
 
 #include "headers/neuralnetwork.hpp"
 #include "headers/teacher.hpp"
@@ -59,7 +58,7 @@ class Application
          * Effectue une run de test dont le nombre de tests est passé en paramètres
          * @param nbTests le nombre de tests à faire pendant la run
          */
-        float runTest();
+        float runTest(int limit = -1);
 
         void runExperiments(unsigned int nbExperiments, unsigned int nbLoops, unsigned int nbTeachingsPerLoop);
         void runSingleExperiment(unsigned int nbLoops, unsigned int nbTeachingsPerLoop);
