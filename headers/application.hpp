@@ -66,16 +66,6 @@ class Application
         void resetExperiment();
 
     private:
-        /// Extrait un batch d'un des batchs globaux du projet
-        /**
-         * Extrait un batch d'exemples d'un des deux batchs globaux (mTeachingBatch ou mTestingBatch) au choix
-         * @param batchSize le nombre de samples qu'on veut extraire
-         * @param isTestBatch permet de déterminer si on veut extraire du batch de test ou du batch d'apprentissage
-         * @return le batch extrait du batch global choisir
-         */
-        Batch generateBatch(unsigned int batchSize) const;
-
-    private:
         /// Le réseau avec lequel on travaille
         NeuralNetwork::Ptr  mNetwork;
         /// Le teacher qui permet de superviser l'apprentissage du réseau

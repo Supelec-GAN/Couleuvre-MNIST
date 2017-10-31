@@ -54,10 +54,14 @@ void Application::resetExperiment()
 
 void Application::runTeach(unsigned int nbTeachings)
 {
-    auto samples(generateBatch(nbTeachings));
+    std::uniform_int_distribution<> distribution(0, batchSize-1);
+    std::mt19937 randomEngine((std::random_device())());
 
-    for(auto itr = samples.begin(); itr != samples.end(); ++itr)
-        mTeacher.backProp(itr->first, itr->second);
+    for(unsigned int index{0}; index < nbTeachings; index++)
+    {
+        auto sample{mTeachingBatch[distribution(randomEngine)]};
+        mTeacher.backProp(sample.first, itr.second);
+    }
 }
 
 float Application::runTest(int limit)
@@ -71,17 +75,4 @@ float Application::runTest(int limit)
     }
 
     return errorMean/static_cast<float>(mTestingBatch.size());
-}
-
-Application::Batch Application::generateBatch(unsigned int batchSize) const
-{
-    std::uniform_int_distribution<> distribution(0, batchSize-1);
-    std::mt19937 randomEngine((std::random_device())());
-
-    Batch batch;
-
-    for(unsigned int i{0}; i < batchSize; ++i)
-        batch.push_back(mTeachingBatch[distribution(randomEngine)]);
-
-    return batch;
 }
