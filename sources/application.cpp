@@ -32,6 +32,7 @@ void Application::runExperiments(unsigned int nbExperiments, unsigned int nbLoop
     for(unsigned int index{0}; index < nbExperiments; ++index)
     {
         runSingleExperiment(nbLoops, nbTeachingsPerLoop);
+        std::cout << "Exp num. " << (index+1) << " finie !" << std::endl;
         resetExperiment();
     }
 
@@ -44,6 +45,7 @@ void Application::runSingleExperiment(unsigned int nbLoops, unsigned int nbTeach
     {
         runTeach(nbTeachingsPerLoop);
         mStatsCollector[loopIndex].addResult(runTest());
+        std::cout << "Apprentissage num. : " << (loopIndex+1)*400 << std::endl;
     }
 }
 
