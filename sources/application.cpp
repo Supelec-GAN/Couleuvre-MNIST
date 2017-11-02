@@ -54,13 +54,13 @@ void Application::resetExperiment()
 
 void Application::runTeach(unsigned int nbTeachings)
 {
-    std::uniform_int_distribution<> distribution(0, batchSize-1);
+    std::uniform_int_distribution<> distribution(0, mTeachingBatch.size()-1);
     std::mt19937 randomEngine((std::random_device())());
 
     for(unsigned int index{0}; index < nbTeachings; index++)
     {
         auto sample{mTeachingBatch[distribution(randomEngine)]};
-        mTeacher.backProp(sample.first, itr.second);
+        mTeacher.backProp(sample.first, sample.second);
     }
 }
 
