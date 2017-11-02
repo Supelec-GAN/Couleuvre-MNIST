@@ -14,6 +14,7 @@ HEADERS += \
     headers/errorcollector.hpp \
     headers/functions.hpp \
     headers/statscollector.hpp \
+    headers/signalhandler.hpp
 
 SOURCES += \
     sources/functions.cpp \

@@ -65,6 +65,8 @@ class Application
 
         void resetExperiment();
 
+        void handleInterrupt();
+
     private:
         /// Le réseau avec lequel on travaille
         NeuralNetwork::Ptr  mNetwork;

@@ -5,6 +5,7 @@
 
 #include "headers/application.hpp"
 #include "headers/mnist_reader.h"
+#include "headers/signalhandler.hpp"
 
 using namespace std;
 
@@ -49,6 +50,12 @@ int main()
 
         //Construction de l'application qui gère tout
         Application appMNIST(network, batchTrain, batchTest);
+
+        SignalApplier applier;
+        applier.ptr.reset(&appMNIST);
+        SignalHandler::ptr = &applier;
+        signal(SIGINT, SignalHandler::handle);
+
         appMNIST.runExperiments(12, 100, 400);
     }
     catch (const std::exception& ex)

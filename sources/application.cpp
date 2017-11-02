@@ -78,3 +78,8 @@ float Application::runTest(int limit)
 
     return errorMean/static_cast<float>(mTestingBatch.size());
 }
+
+void Application::handleInterrupt()
+{
+    mStatsCollector.exportData(true);
+}
