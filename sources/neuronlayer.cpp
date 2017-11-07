@@ -15,14 +15,14 @@ NeuronLayer::NeuronLayer(unsigned int inputSize, unsigned int outputSize, std::f
 //*************PROPAGATION**************
 //**************************************
 
-Eigen::VectorXf NeuronLayer::process(Eigen::VectorXf inputs)
+Eigen::VectorXf NeuronLayer::process(Eigen::MatrixXf inputs)
 {
     mBufferInput = inputs;
     mBufferActivationLevel = mPoids*inputs - mBiais;
-    Eigen::VectorXf output = mBufferActivationLevel;
+    Eigen::MatrixXf output = mBufferActivationLevel;
 
     for(unsigned int i(0); i < output.size(); i++)
-        output[i] = mActivationFun(output[i]);
+        output(i,0) = mActivationFun(output(i,0));
 
     return output;
 }
@@ -31,10 +31,10 @@ Eigen::VectorXf NeuronLayer::process(Eigen::VectorXf inputs)
 //**************************************
 
 
-Eigen::VectorXf NeuronLayer::backProp(Eigen::VectorXf xnPartialDerivative, float step)
+Eigen::VectorXf NeuronLayer::backProp(Eigen::MatrixXf xnPartialDerivative, float step)
 {
     // Calcul de ynPartialDerivative
-    Eigen::VectorXf ynPartialDerivative = fnDerivativeMatrix()*xnPartialDerivative;
+    Eigen::MatrixXf ynPartialDerivative = fnDerivativeMatrix()*xnPartialDerivative;
 
     //Mise à jour des poids
     Eigen::MatrixXf wnPartialDerivative = ynPartialDerivative*(mBufferInput.transpose());
@@ -54,7 +54,7 @@ Eigen::MatrixXf NeuronLayer::fnDerivativeMatrix() const
                             return (mActivationFun(x+dx) - mActivationFun(x))/dx;
                         };
 
-    Eigen::VectorXf fnDerivativeMat(mBufferActivationLevel.size());
+    Eigen::MatrixXf fnDerivativeMat(mBufferActivationLevel.size(),1);
     for(auto i(0); i < mBufferActivationLevel.size(); ++i)
         fnDerivativeMat(i) = fnDerivated(mBufferActivationLevel(i), 0.05);
 
@@ -64,7 +64,7 @@ Eigen::MatrixXf NeuronLayer::fnDerivativeMatrix() const
 void NeuronLayer::reset()
 {
     mPoids = Eigen::MatrixXf::Random(mPoids.rows(), mPoids.cols());
-    mBiais = Eigen::VectorXf::Random(mBiais.size());
+    mBiais = Eigen::MatrixXf::Random(mBiais.rows(),1);
 }
 
 //*************AUXILIAIRES**************
