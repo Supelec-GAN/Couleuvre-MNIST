@@ -13,7 +13,7 @@ struct Functions
         /// Un alias sur une fonction d'activation
         using ActivationFun = std::function<float(float)>;
         /// Un alias sur une fonction d'erreur
-        using ErrorFun      = std::function<float(Eigen::VectorXf, Eigen::VectorXf)>;
+        using ErrorFun      = std::function<float(Eigen::MatrixXf, Eigen::MatrixXf)>;
 
         /// Fonction d'activation sigmoide
         /**

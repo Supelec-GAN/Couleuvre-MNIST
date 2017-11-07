@@ -19,5 +19,5 @@ Functions::ActivationFun Functions::hyperTan()
 
 Functions::ErrorFun Functions::l2Norm()
 {
-    return [] (Eigen::VectorXf v1, Eigen::VectorXf v2) {return (v1-v2).squaredNorm();};
+    return [] (Eigen::MatrixXf v1, Eigen::MatrixXf v2) {return (v1-v2).squaredNorm();};
 }
