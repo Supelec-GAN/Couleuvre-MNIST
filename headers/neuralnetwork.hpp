@@ -44,7 +44,7 @@ class NeuralNetwork : public std::list<NeuronLayer>
         template <typename Container>
         NeuralNetwork(Container layerList);
 
-        Eigen::VectorXf process(Eigen::VectorXf input);
+        Eigen::MatrixXf process(Eigen::MatrixXf input);
 
 
     public:

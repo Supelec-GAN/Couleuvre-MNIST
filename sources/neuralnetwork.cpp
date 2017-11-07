@@ -19,7 +19,7 @@ NeuralNetwork::NeuralNetwork(std::vector<unsigned int> layerSizes)
 }
 
 
-Eigen::VectorXf NeuralNetwork::process(Eigen::VectorXf input)
+Eigen::MatrixXf NeuralNetwork::process(Eigen::MatrixXf input)
 {
 	for(auto itr = begin(); itr != end(); ++itr)
 		input = (*itr).process(input);
