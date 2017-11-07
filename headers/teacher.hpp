@@ -32,7 +32,7 @@ class Teacher
          * @param step le pas d'apprentissage
          * @param dx le deplacement élémentaire pour calculer la dérivée
          */
-        void            backProp(Eigen::VectorXf input, Eigen::VectorXf desiredOutput, float step = 0.2, float dx = 0.05);
+        void            backProp(Eigen::MatrixXf input, Eigen::MatrixXf desiredOutput, float step = 0.2, float dx = 0.05);
 
     private:
         /// Fonction propageant l'erreur itérativement à travers le réseau
@@ -41,7 +41,7 @@ class Teacher
          * @param xnPartialDerivative la dérivée dE/dXn initiale
          * @param step le pas d'apprentissage
          */
-        void            propError(Eigen::VectorXf xnPartialDerivative, float step);
+        void            propError(Eigen::MatrixXf xnPartialDerivative, float step);
 
         /// Fonction calculant le vecteur dE/dXn initial
         /**
@@ -52,7 +52,7 @@ class Teacher
          * @param dx le pas de dérivation
          * @return renvoie le vecteur dE/dXn
          */
-        Eigen::VectorXf errorVector(Eigen::VectorXf output, Eigen::VectorXf desiredOutput, float dx);
+        Eigen::MatrixXf errorVector(Eigen::MatrixXf output, Eigen::MatrixXf desiredOutput, float dx);
 
     private:
         /// Un pointeur sur le réseau dont on veut superviser l'apprentissage
