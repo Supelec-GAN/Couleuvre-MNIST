@@ -32,7 +32,7 @@ class NeuronLayer
          * \return le vecteur d'output de la couche de neurones
          * la fonction effectue le produit matriciel des poids par les entrées, puis applique la fonction d'activation
          */
-        Eigen::VectorXf process(Eigen::MatrixXf inputs);
+        Eigen::MatrixXf process(Eigen::MatrixXf inputs);
 
 
         /// La fonction effectuant les calculs de rétropropagation
@@ -43,7 +43,7 @@ class NeuronLayer
          * @param step le pas d'apprentissage
          * @return le vecteur des dérivées partielles selon Xn-1 à envoyer à la couche précédente
          */
-        Eigen::VectorXf backProp(Eigen::MatrixXf xnPartialDerivative, float step);
+        Eigen::MatrixXf backProp(Eigen::MatrixXf xnPartialDerivative, float step);
 
         void            reset();
 

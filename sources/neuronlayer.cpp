@@ -15,7 +15,7 @@ NeuronLayer::NeuronLayer(unsigned int inputSize, unsigned int outputSize, std::f
 //*************PROPAGATION**************
 //**************************************
 
-Eigen::VectorXf NeuronLayer::process(Eigen::MatrixXf inputs)
+Eigen::MatrixXf NeuronLayer::process(Eigen::MatrixXf inputs)
 {
     mBufferInput = inputs;
     mBufferActivationLevel = mPoids*inputs - mBiais;
@@ -31,7 +31,7 @@ Eigen::VectorXf NeuronLayer::process(Eigen::MatrixXf inputs)
 //**************************************
 
 
-Eigen::VectorXf NeuronLayer::backProp(Eigen::MatrixXf xnPartialDerivative, float step)
+Eigen::MatrixXf NeuronLayer::backProp(Eigen::MatrixXf xnPartialDerivative, float step)
 {
     // Calcul de ynPartialDerivative
     Eigen::MatrixXf ynPartialDerivative = fnDerivativeMatrix()*xnPartialDerivative;

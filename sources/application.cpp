@@ -11,9 +11,9 @@ Application::Application(NeuralNetwork::Ptr network, Batch teachingBatch, Batch 
 {}
 
 Application::Application(   NeuralNetwork::Ptr network,
-                            std::function<Eigen::VectorXf (Eigen::VectorXf)> modelFunction,
-                            std::vector<Eigen::VectorXf> teachingInputs,
-                            std::vector<Eigen::VectorXf> testingInputs)
+                            std::function<Eigen::MatrixXf (Eigen::MatrixXf)> modelFunction,
+                            std::vector<Eigen::MatrixXf> teachingInputs,
+                            std::vector<Eigen::MatrixXf> testingInputs)
 : mNetwork(network)
 , mTeacher(mNetwork)
 , mStatsCollector()
@@ -61,7 +61,7 @@ void Application::runTeach(unsigned int nbTeachings)
 
     for(unsigned int index{0}; index < nbTeachings; index++)
     {
-        auto sample{mTeachingBatch[distribution(randomEngine)]};
+        Sample sample{mTeachingBatch[distribution(randomEngine)]};
         mTeacher.backProp(sample.first, sample.second);
     }
 }
@@ -70,9 +70,9 @@ float Application::runTest(int limit)
 {
     float errorMean{0};
 
-    for(auto itr = mTestingBatch.begin(); itr != mTestingBatch.end() && limit-- != 0; ++itr)
+    for(std::vector<Sample>::iterator itr = mTestingBatch.begin(); itr != mTestingBatch.end() && limit-- != 0; ++itr)
     {
-        auto output{mNetwork->process(itr->first)};
+        Eigen::MatrixXf output{mNetwork->process(itr->first)};
         errorMean += sqrt((output - itr->second).squaredNorm());
     }
 

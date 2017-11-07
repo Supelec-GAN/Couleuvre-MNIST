@@ -20,7 +20,7 @@ int mnist_reader::reverseInt (int i)
 }
 
 
-void mnist_reader::ReadMNIST(vector<Eigen::VectorXf> &mnist, Eigen::VectorXi &label)
+void mnist_reader::ReadMNIST(vector<Eigen::MatrixXf> &mnist, Eigen::MatrixXi &label)
 {
     ifstream file (mFullPathImage,ios::binary);
     if (file.is_open())
@@ -40,7 +40,7 @@ void mnist_reader::ReadMNIST(vector<Eigen::VectorXf> &mnist, Eigen::VectorXi &la
         mnist.resize(number_of_images);
         for(auto itr(mnist.begin()); itr != mnist.end(); itr++)
         {
-            itr->resize(n_rows*n_cols);
+            itr->resize(n_rows*n_cols,1);
         }
         for(int i=0;i<number_of_images;++i)
         {
@@ -50,7 +50,7 @@ void mnist_reader::ReadMNIST(vector<Eigen::VectorXf> &mnist, Eigen::VectorXi &la
                 {
                     unsigned char temp=0;
                     file.read((char*)&temp,sizeof(temp));
-                    mnist[i][(n_rows*r)+c] = ((float)temp)/255;
+                    mnist[i]((n_rows*r)+c,0) = ((float)temp)/255;
                 }
             }
         }
@@ -67,12 +67,12 @@ void mnist_reader::ReadMNIST(vector<Eigen::VectorXf> &mnist, Eigen::VectorXi &la
         magic_number= reverseInt(magic_number);
         file2.read((char*)&number_of_images,sizeof(number_of_images));
         number_of_images= reverseInt(number_of_images);
-        label.resize(number_of_images);
+        label.resize(number_of_images,1);
         for(int i=0;i<number_of_images;++i)
         {
             unsigned char temp=0;
             file2.read((char*)&temp,sizeof(temp));
-            label[i] = (int)temp;
+            label(i,0) = (int)temp;
         }
     }
     else

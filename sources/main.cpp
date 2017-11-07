@@ -20,13 +20,13 @@ int main()
         std::shared_ptr<NeuralNetwork> network(new NeuralNetwork(sizes, funs));
 
         mnist_reader readerTrain("MNIST/train-images-60k", "MNIST/train-labels-60k");
-        std::vector<Eigen::VectorXf> imageTrain;
-        Eigen::VectorXi labelTrain;
+        std::vector<Eigen::MatrixXf> imageTrain;
+        Eigen::MatrixXi labelTrain;
         readerTrain.ReadMNIST(imageTrain, labelTrain);
 
         mnist_reader readerTest("MNIST/test-images-10k", "MNIST/test-labels-10k");
-        std::vector<Eigen::VectorXf> imageTest;
-        Eigen::VectorXi labelTest;
+        std::vector<Eigen::MatrixXf> imageTest;
+        Eigen::MatrixXi labelTest;
         readerTest.ReadMNIST(imageTest, labelTest);
 
         Application::Batch batchTrain;

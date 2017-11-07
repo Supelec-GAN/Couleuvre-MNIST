@@ -18,7 +18,7 @@ class Application
 {
     public:
         /// Un alias pour désigner un donnée (Entrée, Sortie)
-        using Sample = std::pair<Eigen::VectorXf, Eigen::VectorXf>;
+        using Sample = std::pair<Eigen::MatrixXf, Eigen::MatrixXf>;
         /// Un alias pour désigner un batch de données (Entrée, Sortie)
         using Batch = std::vector<Sample>;
 
@@ -42,9 +42,9 @@ class Application
          * @param testingInputs les inputs pour les tests
          */
         Application(NeuralNetwork::Ptr network,
-                    std::function<Eigen::VectorXf(Eigen::VectorXf)> modelFunction,
-                    std::vector<Eigen::VectorXf> teachingInputs,
-                    std::vector<Eigen::VectorXf> testingInputs);
+                    std::function<Eigen::MatrixXf(Eigen::MatrixXf)> modelFunction,
+                    std::vector<Eigen::MatrixXf> teachingInputs,
+                    std::vector<Eigen::MatrixXf> testingInputs);
 
         /// Effectue une run d'apprentissage
         /**

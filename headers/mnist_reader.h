@@ -12,8 +12,7 @@ class mnist_reader
 {
 public:
     mnist_reader(string full_path_image, string full_path_label);
-    //static const pair<Eigen::VectorXi, vector<Eigen::VectorXd> createInput(string, string);
-    void ReadMNIST(vector<Eigen::VectorXf> &mnist, Eigen::VectorXi &label);
+    void ReadMNIST(vector<Eigen::MatrixXf> &mnist, Eigen::MatrixXi &label);
 
 private:
     static int reverseInt (int i);
