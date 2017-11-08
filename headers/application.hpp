@@ -2,6 +2,7 @@
 #define APPLICATION_HPP
 
 #include <eigen3/Eigen/Dense>
+#include <rapidjson/include/rapidjson/document.h>
 #include <vector>
 #include <random>
 
@@ -16,6 +17,13 @@
  */
 class Application
 {
+    public:
+        struct Config
+        {
+            float step;
+            float dx;
+        };
+
     public:
         /// Un alias pour désigner un donnée (Entrée, Sortie)
         using Sample = std::pair<Eigen::VectorXf, Eigen::VectorXf>;
@@ -66,6 +74,11 @@ class Application
         void resetExperiment();
 
     private:
+        /// Fonction pour charger la configuration de l'application
+        void loadConfig();
+        void setConfig(rapidjson::Document& document);
+
+    private:
         /// Le réseau avec lequel on travaille
         NeuralNetwork::Ptr  mNetwork;
         /// Le teacher qui permet de superviser l'apprentissage du réseau
@@ -79,6 +92,9 @@ class Application
         Stats::StatsCollector mStatsCollector;
         /// Un compteur permettant d'indicer les données exportées
         unsigned int        mTestCounter;
+
+        /// Configuration de l'application
+        Config mConfig;
 };
 
 #endif // APPLICATION_HPP

@@ -1,5 +1,8 @@
 #include "headers/application.hpp"
+
 #include <math.h>
+#include <rapidjson/include/rapidjson/error/en.h>
+#include <fstream>
 
 Application::Application(NeuralNetwork::Ptr network, Batch teachingBatch, Batch testingBatch)
 : mNetwork(network)
@@ -8,7 +11,10 @@ Application::Application(NeuralNetwork::Ptr network, Batch teachingBatch, Batch 
 , mTestingBatch(testingBatch)
 , mStatsCollector()
 , mTestCounter(0)
-{}
+{
+    // Charge la configuration de l'application
+    loadConfig();
+}
 
 Application::Application(   NeuralNetwork::Ptr network,
                             std::function<Eigen::VectorXf (Eigen::VectorXf)> modelFunction,
@@ -19,6 +25,9 @@ Application::Application(   NeuralNetwork::Ptr network,
 , mStatsCollector()
 , mTestCounter(0)
 {
+    // Charge la configuration de l'application
+    loadConfig();
+
     // Génère le batch d'apprentissage à partir des entrées et de la fonction à modéliser
     for(size_t i{0}; i < teachingInputs.size(); ++i)
         mTeachingBatch.push_back(Sample(teachingInputs[i], modelFunction(teachingInputs[i])));
@@ -62,7 +71,7 @@ void Application::runTeach(unsigned int nbTeachings)
     for(unsigned int index{0}; index < nbTeachings; index++)
     {
         auto sample{mTeachingBatch[distribution(randomEngine)]};
-        mTeacher.backProp(sample.first, sample.second);
+        mTeacher.backProp(sample.first, sample.second, mConfig.step, mConfig.dx);
     }
 }
 
@@ -78,3 +87,38 @@ float Application::runTest(int limit)
 
     return errorMean/static_cast<float>(mTestingBatch.size());
 }
+
+void Application::loadConfig()
+{
+    std::stringstream ss;
+    std::ifstream inputStream("config.json");
+    if(!inputStream)
+    {
+      throw("Failed to load file");
+    }
+    ss << inputStream.rdbuf();
+    inputStream.close();
+    rapidjson::Document doc;
+    rapidjson::ParseResult ok(doc.Parse(ss.str().c_str()));
+    if(!ok)
+    {
+        std::cout << stderr << "JSON parse error: %s (%u)" << rapidjson::GetParseError_En(ok.Code()) << ok.Offset() << std::endl;
+        exit(EXIT_FAILURE);
+    }
+
+    setConfig(doc);
+}
+
+
+void Application::setConfig(rapidjson::Document& document)
+{
+    mConfig.step = document["step"].GetFloat();
+    mConfig.dx = document["dx"].GetFloat();
+
+    mStatsCollector.writeCSV("step");
+    mStatsCollector.writeCSV(mConfig.step);
+    mStatsCollector.writeCSV("dx");
+    mStatsCollector.writeCSV(mConfig.dx, 1);
+}
+
+

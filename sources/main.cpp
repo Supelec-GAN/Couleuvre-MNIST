@@ -2,6 +2,7 @@
 #include <random>
 #include <eigen3/Eigen/Dense>
 #include <functional>
+#include <ctime>
 
 #include "headers/application.hpp"
 #include "headers/mnist_reader.h"
@@ -49,7 +50,7 @@ int main()
 
         //Construction de l'application qui gère tout
         Application appMNIST(network, batchTrain, batchTest);
-        appMNIST.runExperiments(12, 100, 400);
+        appMNIST.runExperiments(0, 100, 400);
     }
     catch (const std::exception& ex)
     {
