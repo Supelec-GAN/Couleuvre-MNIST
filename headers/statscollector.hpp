@@ -20,8 +20,7 @@ class StatsCollector
 
         void exportData(bool mustProcessData = true);
 
-        void writeCSV(std::string string, bool endRow = 0);
-        void writeCSV(float number, bool endRow = 0);
+        csvfile* getCSVFile();
 
     private:
         std::vector<ErrorCollector> mErrorStats;

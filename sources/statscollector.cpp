@@ -33,17 +33,9 @@ void Stats::StatsCollector::exportData(bool mustProcessData)
     }
 }
 
-void Stats::StatsCollector::writeCSV(std::string string, bool endRow)
-{
-    mCSV << string;
-    if (endRow)
-        mCSV << endrow;
-}
 
-void Stats::StatsCollector::writeCSV(float number, bool endRow)
+csvfile* Stats::StatsCollector::getCSVFile()
 {
-    mCSV << number;
-    if (endRow)
-        mCSV << endrow;
+    return &mCSV;
 }
 

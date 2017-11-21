@@ -115,10 +115,7 @@ void Application::setConfig(rapidjson::Document& document)
     mConfig.step = document["step"].GetFloat();
     mConfig.dx = document["dx"].GetFloat();
 
-    mStatsCollector.writeCSV("step");
-    mStatsCollector.writeCSV(mConfig.step);
-    mStatsCollector.writeCSV("dx");
-    mStatsCollector.writeCSV(mConfig.dx, 1);
+    *mStatsCollector.getCSVFile() << "Step" << mConfig.step << "dx" << mConfig.dx << endrow;
 }
 
 
