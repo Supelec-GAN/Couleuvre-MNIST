@@ -7,6 +7,7 @@
 #include <vector>
 #include <string>
 
+
 namespace Stats
 {
 
@@ -18,6 +19,8 @@ class StatsCollector
         ErrorCollector& operator[](unsigned int teachIndex);
 
         void exportData(bool mustProcessData = true);
+
+        csvfile* getCSVFile();
 
     private:
         std::vector<ErrorCollector> mErrorStats;

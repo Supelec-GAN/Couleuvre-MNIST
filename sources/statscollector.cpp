@@ -1,10 +1,13 @@
 #include "headers/statscollector.hpp"
+#include "headers/application.hpp"
 
 #include <stdexcept>
 
 Stats::StatsCollector::StatsCollector(const std::string& CSVFileName)
 : mCSV(CSVFileName + ".csv")
-{}
+{
+    mCSV << "Teach index" << "Mean" << "Deviation" << "Confidence Range" << "" << "";
+}
 
 Stats::ErrorCollector& Stats::StatsCollector::operator[](unsigned int teachIndex)
 {
@@ -22,7 +25,6 @@ void Stats::StatsCollector::exportData(bool mustProcessData)
     if(!mustProcessData)
         throw std::logic_error("Not implemented yet");
 
-    mCSV << "Teach index" << "Mean" << "Deviation" << "Confidence Range" << endrow;
     for (unsigned int index{0}; index < mErrorStats.size(); ++index)
     {
         ErrorCollector::StatisticData data{mErrorStats[index].processData()};
@@ -30,3 +32,10 @@ void Stats::StatsCollector::exportData(bool mustProcessData)
         mCSV << index << data.mean << data.deviation << data.confidenceRange << endrow;
     }
 }
+
+
+csvfile* Stats::StatsCollector::getCSVFile()
+{
+    return &mCSV;
+}
+
