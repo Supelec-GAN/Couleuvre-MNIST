@@ -1,7 +1,7 @@
 #include "headers/application.hpp"
+#include <headers/rapidjson/error/en.h>
 
 #include <math.h>
-#include <rapidjson/include/rapidjson/error/en.h>
 #include <fstream>
 
 Application::Application(NeuralNetwork::Ptr network, Batch teachingBatch, Batch testingBatch)
@@ -88,13 +88,13 @@ float Application::runTest(int limit)
     return errorMean/static_cast<float>(mTestingBatch.size());
 }
 
-void Application::loadConfig()
+void Application::loadConfig(const std::string& configFileName)
 {
     std::stringstream ss;
-    std::ifstream inputStream("config.json");
+    std::ifstream inputStream(configFileName);
     if(!inputStream)
     {
-      throw("Failed to load file");
+      throw std::runtime_error("Application::loadConfig Error - Failed to load " + configFileName);
     }
     ss << inputStream.rdbuf();
     inputStream.close();

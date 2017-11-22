@@ -75,7 +75,7 @@ class Application
 
     private:
         /// Fonction pour charger la configuration de l'application
-        void loadConfig();
+        void loadConfig(const std::string& configFileName = "config.json");
         void setConfig(rapidjson::Document& document);
 
     private:
