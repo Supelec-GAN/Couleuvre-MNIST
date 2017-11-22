@@ -2,10 +2,10 @@
 #define APPLICATION_HPP
 
 #include <eigen3/Eigen/Dense>
-#include <rapidjson/include/rapidjson/document.h>
 #include <vector>
 #include <random>
 
+#include <headers/rapidjson/document.h>
 #include "headers/neuralnetwork.hpp"
 #include "headers/teacher.hpp"
 #include "headers/statscollector.hpp"
