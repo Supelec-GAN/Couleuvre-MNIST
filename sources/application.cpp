@@ -50,11 +50,13 @@ void Application::runExperiments(unsigned int nbExperiments, unsigned int nbLoop
 
 void Application::runSingleExperiment(unsigned int nbLoops, unsigned int nbTeachingsPerLoop)
 {
+    mStatsCollector[0].addResult(runTest());
+
     for(unsigned int loopIndex{0}; loopIndex < nbLoops; ++loopIndex)
     {
+        std::cout << "Apprentissage num. : " << (loopIndex)*nbTeachingsPerLoop << std::endl;
         runTeach(nbTeachingsPerLoop);
-        mStatsCollector[loopIndex].addResult(runTest());
-        std::cout << "Apprentissage num. : " << (loopIndex+1)*400 << std::endl;
+        mStatsCollector[loopIndex+1].addResult(runTest());
     }
 }
 
@@ -72,6 +74,8 @@ void Application::runTeach(unsigned int nbTeachings)
     {
         Sample sample{mTeachingBatch[distribution(randomEngine)]};
         mTeacher.backProp(sample.first, sample.second, mConfig.step, mConfig.dx);
+        if(index %100 == 0)
+            std::cout << "+" << index << std::endl;
     }
 }
 
