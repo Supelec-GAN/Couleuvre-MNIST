@@ -66,7 +66,7 @@ class Application
          * Effectue une run de test dont le nombre de tests est passé en paramètres
          * @param nbTests le nombre de tests à faire pendant la run
          */
-        float runTest(int limit = -1);
+        float runTest(int limit = -1, bool returnErrorRate = 1);
 
         void runExperiments(unsigned int nbExperiments, unsigned int nbLoops, unsigned int nbTeachingsPerLoop);
         void runSingleExperiment(unsigned int nbLoops, unsigned int nbTeachingsPerLoop);
@@ -94,7 +94,7 @@ class Application
         unsigned int        mTestCounter;
 
         /// Configuration de l'application
-        Config mConfig;
+        Config              mConfig;
 };
 
 #endif // APPLICATION_HPP

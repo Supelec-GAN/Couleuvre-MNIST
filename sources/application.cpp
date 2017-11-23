@@ -75,14 +75,29 @@ void Application::runTeach(unsigned int nbTeachings)
     }
 }
 
-float Application::runTest(int limit)
+float Application::runTest(int limit, bool returnErrorRate)
 {
     float errorMean{0};
 
-    for(std::vector<Sample>::iterator itr = mTestingBatch.begin(); itr != mTestingBatch.end() && limit-- != 0; ++itr)
+    if (returnErrorRate)
     {
-        Eigen::MatrixXf output{mNetwork->process(itr->first)};
-        errorMean += sqrt((output - itr->second).squaredNorm());
+        int maxLine, maxCol;
+        for(std::vector<Sample>::iterator itr = mTestingBatch.begin(); itr != mTestingBatch.end() && limit-- != 0; ++itr)
+        {
+            Eigen::MatrixXf output{mNetwork->process(itr->first)};
+            output.maxCoeff(&maxLine, &maxCol);
+            output.setZero();
+            output(maxLine, maxCol) = 1;
+            errorMean += sqrt((output - itr->second).squaredNorm())/sqrt(2);
+        }
+    }
+    else
+    {
+        for(std::vector<Sample>::iterator itr = mTestingBatch.begin(); itr != mTestingBatch.end() && limit-- != 0; ++itr)
+        {
+            Eigen::MatrixXf output{mNetwork->process(itr->first)};
+            errorMean += sqrt((output - itr->second).squaredNorm());
+        }
     }
 
     return errorMean/static_cast<float>(mTestingBatch.size());
