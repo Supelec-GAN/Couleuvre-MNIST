@@ -2,6 +2,7 @@
 #include <random>
 #include <eigen3/Eigen/Dense>
 #include <functional>
+#include <ctime>
 
 #include "headers/application.hpp"
 #include "headers/mnist_reader.h"
@@ -12,6 +13,7 @@ int main()
 {   
     srand(time(0));
 
+    int timeref = time(0);
     try
     {
         // Construction du réseau de neurones
@@ -46,7 +48,8 @@ int main()
             batchTest.push_back(Application::Sample(imageTest[i], outputTest));
         }
         cout << "Chargement du Batch de test effectué !" << endl;
-
+        int rawtime = time(0);
+        cout << "Temps de chargement : " << rawtime - timeref << "s" << endl;
         //Construction de l'application qui gère tout
         Application appMNIST(network, batchTrain, batchTest);
         appMNIST.runExperiments(12, 100, 400);

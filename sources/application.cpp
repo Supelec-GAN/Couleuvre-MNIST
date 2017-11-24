@@ -43,9 +43,16 @@ void Application::runSingleExperiment(unsigned int nbLoops, unsigned int nbTeach
 {
     for(unsigned int loopIndex{0}; loopIndex < nbLoops; ++loopIndex)
     {
+        int timeref = time(0);
         runTeach(nbTeachingsPerLoop);
         mStatsCollector[loopIndex].addResult(runTest());
-        std::cout << "Apprentissage num. : " << (loopIndex+1)*400 << std::endl;
+        std::cout << "Apprentissage num. : " << (loopIndex+1)*nbTeachingsPerLoop << std::endl;
+        std::cout << "Durée : " << time(0) - timeref << "s" << std::endl;
+        if (loopIndex==0)
+        {
+            int temps_total = (time(0)-timeref)*nbLoops;
+            std::cout << "Durée de l'Expérience : " << temps_total << "s ou " << temps_total/3600 << "h " << (temps_total%3600)/60 << "min " << temps_total%60 << "s" << std::endl;
+        }
     }
 }
 
