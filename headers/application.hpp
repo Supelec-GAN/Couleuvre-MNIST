@@ -22,6 +22,10 @@ class Application
         {
             float step;
             float dx;
+
+            unsigned int nbExperiments;
+            unsigned int nbLoopsPerExperiment;
+            unsigned int nbTeachingsPerLoop;
         };
 
     public:
@@ -77,6 +81,7 @@ class Application
         /// Fonction pour charger la configuration de l'application
         void loadConfig(const std::string& configFileName = "config.json");
         void setConfig(rapidjson::Document& document);
+        void displayConfig(rapidjson::Document& document);
 
     private:
         /// Le réseau avec lequel on travaille

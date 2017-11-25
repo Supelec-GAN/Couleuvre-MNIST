@@ -126,6 +126,7 @@ void Application::loadConfig(const std::string& configFileName)
     }
 
     setConfig(doc);
+    displayConfig(doc);
 }
 
 
@@ -134,7 +135,38 @@ void Application::setConfig(rapidjson::Document& document)
     mConfig.step = document["step"].GetFloat();
     mConfig.dx = document["dx"].GetFloat();
 
-    *mStatsCollector.getCSVFile() << "Step" << mConfig.step << "dx" << mConfig.dx << endrow;
+    mConfig.nbExperiments = document["nbExperiments"].GetUint();
+    mConfig.nbLoopsPerExperiment = document["nbLoopsPerExperiment"].GetUint();
+    mConfig.nbTeachingsPerLoop = document["nbTeachingsPerLoop"].GetUint();
+}
+
+void Application::displayConfig(rapidjson::Document &doc)
+{
+    for(auto mItr = doc.MemberBegin(); mItr != doc.MemberEnd(); ++mItr)
+    {
+        auto key = (*mItr).name.GetString();
+
+        if(doc[key].IsArray())
+        {
+            *mStatsCollector.getCSVFile() << key;
+            for(rapidjson::SizeType i = 0; i < doc[key].Size(); i++)
+                *mStatsCollector.getCSVFile() << doc[key].GetFloat();
+        }
+        else if (doc[key].IsFloat())
+        {
+            *mStatsCollector.getCSVFile() << key << doc[key].GetFloat();
+        }
+        else if (doc[key].IsUint())
+        {
+            *mStatsCollector.getCSVFile() << key << doc[key].GetUint();
+        }
+        else if (doc[key].IsBool())
+        {
+            *mStatsCollector.getCSVFile() << key << doc[key].GetBool();
+        }
+    }
+
+    *mStatsCollector.getCSVFile() << endrow;
 }
 
 
