@@ -4,7 +4,7 @@
 #include <math.h>
 #include <fstream>
 
-Application::Application(NeuralNetwork::Ptr network, Batch teachingBatch, Batch testingBatch)
+Application::Application(NeuralNetwork::Ptr network, Batch teachingBatch, Batch testingBatch, const std::string& configFileName)
 : mNetwork(network)
 , mTeacher(mNetwork)
 , mTeachingBatch(teachingBatch)
@@ -13,27 +13,7 @@ Application::Application(NeuralNetwork::Ptr network, Batch teachingBatch, Batch 
 , mTestCounter(0)
 {
     // Charge la configuration de l'application
-    loadConfig();
-}
-
-Application::Application(   NeuralNetwork::Ptr network,
-                            std::function<Eigen::MatrixXf (Eigen::MatrixXf)> modelFunction,
-                            std::vector<Eigen::MatrixXf> teachingInputs,
-                            std::vector<Eigen::MatrixXf> testingInputs)
-: mNetwork(network)
-, mTeacher(mNetwork)
-, mStatsCollector()
-, mTestCounter(0)
-{
-    // Charge la configuration de l'application
-    loadConfig();
-
-    // Génère le batch d'apprentissage à partir des entrées et de la fonction à modéliser
-    for(size_t i{0}; i < teachingInputs.size(); ++i)
-        mTeachingBatch.push_back(Sample(teachingInputs[i], modelFunction(teachingInputs[i])));
-    // Génère le batch d'apprentissage à partir des entrées et de la fonction à modéliser
-    for(size_t i{0}; i < testingInputs.size(); ++i)
-        mTestingBatch.push_back(Sample(testingInputs[i], modelFunction(testingInputs[i])));
+    loadConfig(configFileName);
 }
 
 void Application::runExperiments(unsigned int nbExperiments, unsigned int nbLoops, unsigned int nbTeachingsPerLoop)

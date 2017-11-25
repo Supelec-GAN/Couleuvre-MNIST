@@ -42,21 +42,7 @@ class Application
          * @param teachingBatch le batch des données servant à l'apprentissage
          * @param testingBatch le batch des données de test
          */
-        Application(NeuralNetwork::Ptr network, Batch teachingBatch, Batch testingBatch);
-
-        /// Constructeur par fonction modèle
-        /**
-         * Ce constructeur supervise le projet par rapport au réseaude neurones donné, des batchs d'inputs pour l'apprentissage et les tests,
-         * et la fonction à modéliser
-         * @param network le réseau avec lequel on travaille
-         * @param modelFunction la fonction à modéliser
-         * @param teachingInputs les inputs pour l'apprentissage
-         * @param testingInputs les inputs pour les tests
-         */
-        Application(NeuralNetwork::Ptr network,
-                    std::function<Eigen::MatrixXf(Eigen::MatrixXf)> modelFunction,
-                    std::vector<Eigen::MatrixXf> teachingInputs,
-                    std::vector<Eigen::MatrixXf> testingInputs);
+        Application(NeuralNetwork::Ptr network, Batch teachingBatch, Batch testingBatch, const std::string& configFileName = "config.json");
 
         /// Effectue une run d'apprentissage
         /**
@@ -79,7 +65,7 @@ class Application
 
     private:
         /// Fonction pour charger la configuration de l'application
-        void loadConfig(const std::string& configFileName = "config.json");
+        void loadConfig(const std::string& configFileName);
         void setConfig(rapidjson::Document& document);
         void displayConfig(rapidjson::Document& document);
 
