@@ -16,11 +16,11 @@ Application::Application(NeuralNetwork::Ptr network, Batch teachingBatch, Batch 
     loadConfig(configFileName);
 }
 
-void Application::runExperiments(unsigned int nbExperiments, unsigned int nbLoops, unsigned int nbTeachingsPerLoop)
+void Application::runExperiments()
 {
-    for(unsigned int index{0}; index < nbExperiments; ++index)
+    for(unsigned int index{0}; index < mConfig.nbExperiments; ++index)
     {
-        runSingleExperiment(nbLoops, nbTeachingsPerLoop);
+        runSingleExperiment();
         std::cout << "Exp num. " << (index+1) << " finie !" << std::endl;
         resetExperiment();
     }
@@ -28,14 +28,14 @@ void Application::runExperiments(unsigned int nbExperiments, unsigned int nbLoop
     mStatsCollector.exportData(true);
 }
 
-void Application::runSingleExperiment(unsigned int nbLoops, unsigned int nbTeachingsPerLoop)
+void Application::runSingleExperiment()
 {
     mStatsCollector[0].addResult(runTest());
 
-    for(unsigned int loopIndex{0}; loopIndex < nbLoops; ++loopIndex)
+    for(unsigned int loopIndex{0}; loopIndex < mConfig.nbLoopsPerExperiment; ++loopIndex)
     {
-        std::cout << "Apprentissage num. : " << (loopIndex)*nbTeachingsPerLoop << std::endl;
-        runTeach(nbTeachingsPerLoop);
+        std::cout << "Apprentissage num. : " << (loopIndex)*mConfig.nbTeachingsPerLoop << std::endl;
+        runTeach();
         mStatsCollector[loopIndex+1].addResult(runTest());
     }
 }
@@ -45,12 +45,12 @@ void Application::resetExperiment()
     mNetwork->reset();
 }
 
-void Application::runTeach(unsigned int nbTeachings)
+void Application::runTeach()
 {
     std::uniform_int_distribution<> distribution(0, mTeachingBatch.size()-1);
     std::mt19937 randomEngine((std::random_device())());
 
-    for(unsigned int index{0}; index < nbTeachings; index++)
+    for(unsigned int index{0}; index < mConfig.nbTeachingsPerLoop; index++)
     {
         Sample sample{mTeachingBatch[distribution(randomEngine)]};
         mTeacher.backProp(sample.first, sample.second, mConfig.step, mConfig.dx);
@@ -59,14 +59,14 @@ void Application::runTeach(unsigned int nbTeachings)
     }
 }
 
-float Application::runTest(int limit, bool returnErrorRate)
+float Application::runTest(bool returnErrorRate)
 {
     float errorMean{0};
 
     if (returnErrorRate)
     {
         int maxLine, maxCol;
-        for(std::vector<Sample>::iterator itr = mTestingBatch.begin(); itr != mTestingBatch.end() && limit-- != 0; ++itr)
+        for(std::vector<Sample>::iterator itr = mTestingBatch.begin(); itr != mTestingBatch.end(); ++itr)
         {
             Eigen::MatrixXf output{mNetwork->process(itr->first)};
             output.maxCoeff(&maxLine, &maxCol);
@@ -77,7 +77,7 @@ float Application::runTest(int limit, bool returnErrorRate)
     }
     else
     {
-        for(std::vector<Sample>::iterator itr = mTestingBatch.begin(); itr != mTestingBatch.end() && limit-- != 0; ++itr)
+        for(std::vector<Sample>::iterator itr = mTestingBatch.begin(); itr != mTestingBatch.end(); ++itr)
         {
             Eigen::MatrixXf output{mNetwork->process(itr->first)};
             errorMean += sqrt((output - itr->second).squaredNorm());

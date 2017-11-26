@@ -50,7 +50,7 @@ int main()
 
         //Construction de l'application qui gère tout
         Application appMNIST(network, batchTrain, batchTest);
-        appMNIST.runExperiments(1, 20, 60000);
+        appMNIST.runExperiments();
     }
     catch (const std::exception& ex)
     {

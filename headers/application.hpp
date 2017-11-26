@@ -44,22 +44,26 @@ class Application
          */
         Application(NeuralNetwork::Ptr network, Batch teachingBatch, Batch testingBatch, const std::string& configFileName = "config.json");
 
-        /// Effectue une run d'apprentissage
-        /**
-         * Effectue une run d'apprentissage dont le nombre d'apprentissages est passé en paramètres
-         * @param nbTeachings le nombre d'apprentissages à faire pendant la run
-         */
-        void runTeach(unsigned int nbTeachings);
+
+
+
+
+        void runExperiments();
+        void runSingleExperiment();
 
         /// Effectue une run de tests
         /**
          * Effectue une run de test dont le nombre de tests est passé en paramètres
          * @param nbTests le nombre de tests à faire pendant la run
          */
-        float runTest(int limit = -1, bool returnErrorRate = 1);
+        float runTest(bool returnErrorRate = true);
 
-        void runExperiments(unsigned int nbExperiments, unsigned int nbLoops, unsigned int nbTeachingsPerLoop);
-        void runSingleExperiment(unsigned int nbLoops, unsigned int nbTeachingsPerLoop);
+        /// Effectue une run d'apprentissage
+        /**
+         * Effectue une run d'apprentissage dont le nombre d'apprentissages est passé en paramètres
+         * @param nbTeachings le nombre d'apprentissages à faire pendant la run
+         */
+        void runTeach();
 
         void resetExperiment();
 
