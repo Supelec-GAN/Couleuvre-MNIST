@@ -13,7 +13,7 @@ Application::Application(Batch teachingBatch, Batch testingBatch, const std::str
 , mStatsCollector()
 , mTestCounter(0)
 {
-
+    displayConfig();
 }
 
 void Application::runExperiments()
@@ -104,9 +104,6 @@ Application::Config Application::loadConfig(const std::string& configFileName)
         std::cout << stderr << "JSON parse error: %s (%u)" << rapidjson::GetParseError_En(ok.Code()) << ok.Offset() << std::endl;
         exit(EXIT_FAILURE);
     }
-
-    displayConfig();
-
     return getConfig(doc);
 }
 
