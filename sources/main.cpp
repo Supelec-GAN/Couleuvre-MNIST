@@ -15,11 +15,6 @@ int main()
 
     try
     {
-        // Construction du réseau de neurones
-        std::vector<unsigned int> sizes{ {784,1000,300,10} };
-        std::vector<Functions::ActivationFun> funs{ {Functions::sigmoid(0.1f), Functions::sigmoid(0.1f), Functions::sigmoid(0.1f)} };
-        std::shared_ptr<NeuralNetwork> network(new NeuralNetwork(sizes, funs));
-
         mnist_reader readerTrain("MNIST/train-images-60k", "MNIST/train-labels-60k");
         std::vector<Eigen::MatrixXf> imageTrain;
         Eigen::MatrixXi labelTrain;
@@ -49,7 +44,7 @@ int main()
         cout << "Chargement du Batch de test effectué !" << endl;
 
         //Construction de l'application qui gère tout
-        Application appMNIST(network, batchTrain, batchTest);
+        Application appMNIST(batchTrain, batchTest);
         appMNIST.runExperiments();
     }
     catch (const std::exception& ex)

@@ -26,6 +26,8 @@ class Application
             unsigned int nbExperiments;
             unsigned int nbLoopsPerExperiment;
             unsigned int nbTeachingsPerLoop;
+
+            std::vector<unsigned int> neuronLayerSizes;
         };
 
     public:
@@ -42,7 +44,7 @@ class Application
          * @param teachingBatch le batch des données servant à l'apprentissage
          * @param testingBatch le batch des données de test
          */
-        Application(NeuralNetwork::Ptr network, Batch teachingBatch, Batch testingBatch, const std::string& configFileName = "config.json");
+        Application(Batch teachingBatch, Batch testingBatch, const std::string& configFileName = "config.json");
 
 
 
@@ -69,11 +71,14 @@ class Application
 
     private:
         /// Fonction pour charger la configuration de l'application
-        void loadConfig(const std::string& configFileName);
-        void setConfig(rapidjson::Document& document);
-        void displayConfig(rapidjson::Document& document);
+        Config  loadConfig(const std::string& configFileName);
+        Config  getConfig(rapidjson::Document& document);
+        void    displayConfig();
 
     private:
+        /// Configuration de l'application
+        Config              mConfig;
+
         /// Le réseau avec lequel on travaille
         NeuralNetwork::Ptr  mNetwork;
         /// Le teacher qui permet de superviser l'apprentissage du réseau
@@ -87,9 +92,6 @@ class Application
         Stats::StatsCollector mStatsCollector;
         /// Un compteur permettant d'indicer les données exportées
         unsigned int        mTestCounter;
-
-        /// Configuration de l'application
-        Config              mConfig;
 };
 
 #endif // APPLICATION_HPP

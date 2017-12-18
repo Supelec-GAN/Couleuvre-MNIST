@@ -4,16 +4,16 @@
 #include <math.h>
 #include <fstream>
 
-Application::Application(NeuralNetwork::Ptr network, Batch teachingBatch, Batch testingBatch, const std::string& configFileName)
-: mNetwork(network)
+Application::Application(Batch teachingBatch, Batch testingBatch, const std::string& configFileName)
+: mConfig(loadConfig(configFileName))
+, mNetwork(new NeuralNetwork(mConfig.neuronLayerSizes))
 , mTeacher(mNetwork)
 , mTeachingBatch(teachingBatch)
 , mTestingBatch(testingBatch)
 , mStatsCollector()
 , mTestCounter(0)
 {
-    // Charge la configuration de l'application
-    loadConfig(configFileName);
+
 }
 
 void Application::runExperiments()
@@ -87,7 +87,7 @@ float Application::runTest(bool returnErrorRate)
     return errorMean/static_cast<float>(mTestingBatch.size());
 }
 
-void Application::loadConfig(const std::string& configFileName)
+Application::Config Application::loadConfig(const std::string& configFileName)
 {
     std::stringstream ss;
     std::ifstream inputStream(configFileName);
@@ -105,46 +105,40 @@ void Application::loadConfig(const std::string& configFileName)
         exit(EXIT_FAILURE);
     }
 
-    setConfig(doc);
-    displayConfig(doc);
+    displayConfig();
+
+    return getConfig(doc);
 }
 
 
-void Application::setConfig(rapidjson::Document& document)
+Application::Config Application::getConfig(rapidjson::Document& document)
 {
-    mConfig.step = document["step"].GetFloat();
-    mConfig.dx = document["dx"].GetFloat();
+    Config conf;
 
-    mConfig.nbExperiments = document["nbExperiments"].GetUint();
-    mConfig.nbLoopsPerExperiment = document["nbLoopsPerExperiment"].GetUint();
-    mConfig.nbTeachingsPerLoop = document["nbTeachingsPerLoop"].GetUint();
+    conf.step = document["step"].GetFloat();
+    conf.dx = document["dx"].GetFloat();
+
+    conf.nbExperiments = document["nbExperiments"].GetUint();
+    conf.nbLoopsPerExperiment = document["nbLoopsPerExperiment"].GetUint();
+    conf.nbTeachingsPerLoop = document["nbTeachingsPerLoop"].GetUint();
+
+    auto layersSizes = document["layersSizes"].GetArray();
+    for(rapidjson::SizeType i = 0; i < layersSizes.Size(); i++)
+        conf.neuronLayerSizes.push_back(layersSizes[i].GetUint());
+
+    return conf;
 }
 
-void Application::displayConfig(rapidjson::Document &doc)
+void Application::displayConfig()
 {
-    for(auto mItr = doc.MemberBegin(); mItr != doc.MemberEnd(); ++mItr)
-    {
-        auto key = (*mItr).name.GetString();
-
-        if(doc[key].IsArray())
-        {
-            *mStatsCollector.getCSVFile() << key;
-            for(rapidjson::SizeType i = 0; i < doc[key].Size(); i++)
-                *mStatsCollector.getCSVFile() << doc[key].GetFloat();
-        }
-        else if (doc[key].IsFloat())
-        {
-            *mStatsCollector.getCSVFile() << key << doc[key].GetFloat();
-        }
-        else if (doc[key].IsUint())
-        {
-            *mStatsCollector.getCSVFile() << key << doc[key].GetUint();
-        }
-        else if (doc[key].IsBool())
-        {
-            *mStatsCollector.getCSVFile() << key << doc[key].GetBool();
-        }
-    }
+    *mStatsCollector.getCSVFile() << "step" << mConfig.step;
+    *mStatsCollector.getCSVFile() << "dx" << mConfig.dx;
+    *mStatsCollector.getCSVFile() << "nbExperiments" << mConfig.nbExperiments;
+    *mStatsCollector.getCSVFile() << "nbLoopsPerExperiment" << mConfig.nbLoopsPerExperiment;
+    *mStatsCollector.getCSVFile() << "nbTeachingsPerLoop" << mConfig.nbTeachingsPerLoop;
+    *mStatsCollector.getCSVFile() << "neuronLayerSizes";
+    for(auto c : mConfig.neuronLayerSizes)
+        *mStatsCollector.getCSVFile() << c;
 
     *mStatsCollector.getCSVFile() << endrow;
 }
