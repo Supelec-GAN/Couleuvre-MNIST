@@ -83,6 +83,7 @@ float Application::runTest(bool returnErrorRate)
             errorMean += sqrt((output - itr->second).squaredNorm());
         }
     }
+    std::cout << errorMean/static_cast<float>(mTestingBatch.size()) << std::endl;
 
     return errorMean/static_cast<float>(mTestingBatch.size());
 }

@@ -47,9 +47,6 @@ class Application
         Application(Batch teachingBatch, Batch testingBatch, const std::string& configFileName = "config.json");
 
 
-
-
-
         void runExperiments();
         void runSingleExperiment();
 

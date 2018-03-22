@@ -24,7 +24,7 @@ class NeuronLayer
          *
          * La matrice de poids est de dimension outputSize x inputSize
          */
-                        NeuronLayer(unsigned int inputSize, unsigned int outputSize, std::function<float(float)> activationF = Functions::sigmoid(10.f));
+                        NeuronLayer(unsigned int inputSize, unsigned int outputSize, std::function<float(float)> activationF = Functions::sigmoid(0.1f));
 
         /// La fonction effectuant le calcul de la sortie en fonction de l'entrée
         /**

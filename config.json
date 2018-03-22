@@ -1,0 +1,12 @@
+{
+	"step": 0.2,
+	"dx": 0.01,
+
+	"nbExperiments": 1, 
+	"nbLoopsPerExperiment": 40,
+	"nbTeachingsPerLoop": 1000,
+
+	"layersSizes": [ 784, 300, 100, 10]
+
+}
+

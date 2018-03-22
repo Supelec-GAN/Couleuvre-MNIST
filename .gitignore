@@ -76,5 +76,3 @@ Thumbs.db
 *.dll
 *.exe
 
-# JSON config files
-*.json
